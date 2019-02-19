@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">MQTT Voice Commands</string>
+    <string name="SavedServerKey">rcr.voiceandmqtt.SAVED_SERVER_KEY</string>
+    <string name="SavedTopicKey">rcr.voiceandmqtt.SAVE_TOPIC_KEY</string>
+    <string name="TapMicrophone">Tap on the Mic</string>
+    <string name="OfflineMode">TTS Offline</string>
+    <string name="DefaultServer">test.mosquitto.org:1883</string>
+    <string name="DefaultTopic">rcr/topic</string>
+    <string name="Server">MQTT Server:Port</string>
+    <string name="Topic">MQTT Topic</string>
+    <string name="Connecting">Connecting to MQTT Server</string>
+    <string name="ConnectSuccess">Succesful connection to MQTT Server</string>
+    <string name="ConnectCompleted">Connect Complete to MQTT Server</string>
+    <string name="Connected">Connected to MQTT Server</string>
+    <string name="ConnectFailure">Connect Failure to MQTT Server</string>
+    <string name="ConnectionLost">Connection Lost from MQTT Server</string>
+    <string name="Disconnected">Disconnected from MQTT Server</string>
+    <string name="NotRecognizer">Speech Recognizer not supported</string>
+    <string name="MessageArrived">Message Arrived</string>
+    <string name="DeliveryCompleted">Delivery Completed</string>
+</resources>

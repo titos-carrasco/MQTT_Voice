@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main );
 
-        Log.d( "onCreate", "Begin" );
+        //Log.d( "onCreate", "Begin" );
 
         txtSpeech = findViewById( R.id.txtSpeech );
         txtServer = findViewById( R.id.txtServer );
@@ -48,22 +48,22 @@ public class MainActivity extends AppCompatActivity {
 
         txtStatus.setText( getString( R.string.Disconnected ) );
 
-        Log.d( "onCreate", "End" );
+        //Log.d( "onCreate", "End" );
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        Log.d( "onStart", "Begin" );
-        Log.d( "onStart", "End" );
+        //Log.d( "onStart", "Begin" );
+        //Log.d( "onStart", "End" );
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        Log.d( "onResume", "Begin" );
+        //Log.d( "onResume", "Begin" );
 
         SharedPreferences sharedPref = getPreferences( Context.MODE_PRIVATE );
         String savedServer = sharedPref.getString( getString( R.string.SavedServerKey ), getString( R.string.DefaultServer ) );
@@ -71,14 +71,14 @@ public class MainActivity extends AppCompatActivity {
         txtServer.setText( savedServer );
         txtTopic.setText( savedTopic );
 
-        Log.d( "onResume", "End" );
+        //Log.d( "onResume", "End" );
     }
 
     @Override
     protected void onPause() {
         super.onPause();
 
-        Log.d( "onPause", "Begin" );
+        //Log.d( "onPause", "Begin" );
 
         SharedPreferences sharedPref = getPreferences( Context.MODE_PRIVATE );
         SharedPreferences.Editor editor = sharedPref.edit();
@@ -86,31 +86,31 @@ public class MainActivity extends AppCompatActivity {
         editor.putString( getString( R.string.SavedTopicKey ), txtTopic.getText().toString() );
         editor.apply();
 
-        Log.d( "onPause", "End" );
+        //Log.d( "onPause", "End" );
     }
 
     @Override
     protected void onStop() {
         super.onStop();
 
-        Log.d( "onStop", "Begin" );
+        //Log.d( "onStop", "Begin" );
 
         txtSpeech.setText( null );
         mqttDisconnect();
 
-        Log.d( "onStop", "End" );
+        //Log.d( "onStop", "End" );
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
 
-        Log.d( "onDestroy", "Begin" );
-        Log.d( "onDestroy", "End" );
+        //Log.d( "onDestroy", "Begin" );
+        //Log.d( "onDestroy", "End" );
     }
 
     public void onMicClicked( View v ) {
-        Log.d( "onMicClicked", "Begin" );
+        //Log.d( "onMicClicked", "Begin" );
 
         txtSpeech.setText( null );
         mqttConnect();
@@ -125,32 +125,34 @@ public class MainActivity extends AppCompatActivity {
         try {
             startActivityForResult( intent, REQUEST_CODE );
         } catch ( ActivityNotFoundException e ) {
-            Log.d( "onMicClicked", "ActivityNotFoundException" );
+            //Log.d( "onMicClicked", "ActivityNotFoundException" );
             Toast.makeText( getApplicationContext(), getString( R.string.NotRecognizer ), Toast.LENGTH_SHORT ).show();
         }
 
-        Log.d( "onMicClicked", "End" );
+        //Log.d( "onMicClicked", "End" );
     }
 
     @Override
     protected void onActivityResult( int requestCode, int resultCode, Intent data ) {
         super.onActivityResult( requestCode, resultCode, data );
 
-        Log.d( "onActivityResult", "Begin" );
+        //Log.d( "onActivityResult", "Begin" );
 
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK ) {
             ArrayList<String> result = data.getStringArrayListExtra( RecognizerIntent.EXTRA_RESULTS );
             txtSpeech.setText( result.get( 0 ) );
             mqttPublish( txtTopic.getText().toString(), result.get(0) );
         }
-        else
-            Log.d( "onActivityResult", "Not Published" );
+        else {
+            //Log.d( "onActivityResult", "Not Published" );
+            Toast.makeText( getApplicationContext(), getString( R.string.NotPublished ), Toast.LENGTH_SHORT ).show();
+        }
 
-        Log.d( "onActivityResult", "End" );
+        //Log.d( "onActivityResult", "End" );
     }
 
     private void mqttConnect() {
-        Log.d( "mqttConnect", "Begin" );
+        //Log.d( "mqttConnect", "Begin" );
 
         String serverUri = "tcp://" + txtServer.getText().toString();
         if( mqttAndroidClient != null ) {
@@ -206,15 +208,15 @@ public class MainActivity extends AppCompatActivity {
                 });
             } catch ( MqttException e ) {
                 txtStatus.setText( getString( R.string.Disconnected ) );
-                Log.d("mqttConnect", "MqttException");
+                //Log.d("mqttConnect", "MqttException");
             }
         }
 
-        Log.d( "mqttConnect", "End" );
+        //Log.d( "mqttConnect", "End" );
     }
 
     private void mqttDisconnect() {
-        Log.d("mqttDisconnect", "Begin" );
+        //Log.d("mqttDisconnect", "Begin" );
 
         if( mqttAndroidClient != null ) {
             mqttAndroidClient.close();
@@ -222,23 +224,23 @@ public class MainActivity extends AppCompatActivity {
             txtStatus.setText( getString( R.string.Disconnected ) );
         }
 
-        Log.d("mqttDisconnect", "End" );
+        //Log.d("mqttDisconnect", "End" );
     }
 
     private void mqttPublish( String topic, String payload ) {
-        Log.d("mqttPublish", "Begin");
+        //Log.d("mqttPublish", "Begin");
 
         try {
             MqttMessage message = new MqttMessage();
             message.setQos(0);
             message.setPayload( payload.getBytes() );
             mqttAndroidClient.publish( topic, message );
-            Log.d( "mqttPublish", "Published" );
+            //Log.d( "mqttPublish", "Published" );
         } catch (MqttException e) {
-            Log.d("mqttPublish", "MqttException");
+            //Log.d("mqttPublish", "MqttException");
         }
 
-        Log.d("mqttPublish", "End");
+        //Log.d("mqttPublish", "End");
     }
 
 }

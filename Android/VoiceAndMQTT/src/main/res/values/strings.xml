@@ -18,4 +18,5 @@
     <string name="NotRecognizer">Speech Recognizer not supported</string>
     <string name="MessageArrived">Message Arrived</string>
     <string name="DeliveryCompleted">Delivery Completed</string>
+    <string name="NotPublished">Message not Published</string>
 </resources>

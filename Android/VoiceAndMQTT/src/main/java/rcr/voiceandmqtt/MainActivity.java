@@ -10,7 +10,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+//import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -162,6 +162,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if( mqttAndroidClient == null ) {
+            txtStatus.setText( getString( R.string.Connecting ) );
+
             String clientId = "VAM-" + UUID.randomUUID();
             mqttAndroidClient = new MqttAndroidClient( getApplicationContext(), serverUri, clientId );
             mqttAndroidClient.setCallback(new MqttCallbackExtended() {
@@ -173,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void connectionLost( Throwable throwable ) {
-                    txtStatus.setText( getString( R.string.ConnectionLost ) );
+                    txtStatus.setText( getString( R.string.Disconnected ) );
                     Toast.makeText( getApplicationContext(), getString( R.string.ConnectionLost ), Toast.LENGTH_SHORT ).show();
                 }
 
@@ -192,7 +194,6 @@ public class MainActivity extends AppCompatActivity {
             mqttConnectOptions.setAutomaticReconnect( false ) ;
             mqttConnectOptions.setCleanSession( true );
             try {
-                txtStatus.setText( getString( R.string.Connecting ) );
                 mqttAndroidClient.connect( mqttConnectOptions, null, new IMqttActionListener() {
                     @Override
                     public void onSuccess( IMqttToken asyncActionToken ) {
@@ -202,13 +203,13 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure( IMqttToken asyncActionToken, Throwable exception ) {
-                        txtStatus.setText( getString( R.string.ConnectFailure ) );
-                        Toast.makeText( getApplicationContext(), getString( R.string.ConnectFailure ), Toast.LENGTH_SHORT ).show();
+                        txtStatus.setText( getString( R.string.Disconnected ) );
+                        Toast.makeText( getApplicationContext(), exception.getMessage(), Toast.LENGTH_SHORT ).show();
                     }
                 });
             } catch ( MqttException e ) {
-                txtStatus.setText( getString( R.string.Disconnected ) );
-                //Log.d("mqttConnect", "MqttException");
+                txtStatus.setText( e.getMessage() );
+                //Log.d("mqttConnect", e.getMessage() );
             }
         }
 
@@ -230,15 +231,17 @@ public class MainActivity extends AppCompatActivity {
     private void mqttPublish( String topic, String payload ) {
         //Log.d("mqttPublish", "Begin");
 
-        if( mqttAndroidClient != null ) {
+        if( mqttAndroidClient != null && mqttAndroidClient.isConnected()) {
             MqttMessage message = new MqttMessage();
             message.setQos(0);
             message.setPayload(payload.getBytes());
             try {
-                mqttAndroidClient.publish(topic, message);
-                //Log.d( "mqttPublish", "Published" );
+                mqttAndroidClient.publish( topic, message );
+                //Log.d( "mqttPublish", topic );
+                //Log.d( "mqttPublish", payload );
+                //Log.d( "mqttPublish", getString( R.string.Published ) );
             } catch ( MqttException e ) {
-                //Log.d("mqttPublish", "MqttException");
+                //Log.d("mqttPublish", e.getMessage() );
             }
         }
 
@@ -246,4 +249,3 @@ public class MainActivity extends AppCompatActivity {
     }
 
 }
-

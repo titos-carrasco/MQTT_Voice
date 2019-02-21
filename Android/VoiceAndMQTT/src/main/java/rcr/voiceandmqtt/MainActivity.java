@@ -230,14 +230,16 @@ public class MainActivity extends AppCompatActivity {
     private void mqttPublish( String topic, String payload ) {
         //Log.d("mqttPublish", "Begin");
 
-        try {
+        if( mqttAndroidClient != null ) {
             MqttMessage message = new MqttMessage();
             message.setQos(0);
-            message.setPayload( payload.getBytes() );
-            mqttAndroidClient.publish( topic, message );
-            //Log.d( "mqttPublish", "Published" );
-        } catch (MqttException e) {
-            //Log.d("mqttPublish", "MqttException");
+            message.setPayload(payload.getBytes());
+            try {
+                mqttAndroidClient.publish(topic, message);
+                //Log.d( "mqttPublish", "Published" );
+            } catch ( MqttException e ) {
+                //Log.d("mqttPublish", "MqttException");
+            }
         }
 
         //Log.d("mqttPublish", "End");

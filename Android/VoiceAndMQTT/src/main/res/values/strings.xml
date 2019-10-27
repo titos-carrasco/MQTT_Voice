@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">MQTT Voice Commands</string>
     <string name="SavedServerKey">rcr.voiceandmqtt.SAVED_SERVER_KEY</string>
-    <string name="SavedTopicKey">rcr.voiceandmqtt.SAVE_TOPIC_KEY</string>
+    <string name="SavedTopicKey">rcr.voiceandmqtt.SAVED_TOPIC_KEY</string>
     <string name="TapMicrophone">Tap on the Mic</string>
     <string name="OfflineMode">TTS Offline</string>
     <string name="NotRecognizer">Speech Recognizer not supported</string>

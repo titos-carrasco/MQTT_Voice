@@ -1,4 +1,4 @@
-package rcr.voiceandmqtt;
+package rcr.mqttvoice;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

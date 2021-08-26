@@ -1,4 +1,4 @@
-package rcr.voiceandmqtt;
+package rcr.mqttvoice;
 
 import org.junit.Test;
 
